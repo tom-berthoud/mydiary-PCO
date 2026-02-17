@@ -1,0 +1,6 @@
+# PDF généré
+*.pdf
+
+# Python
+__pycache__/
+*.pyc

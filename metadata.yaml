@@ -1,0 +1,50 @@
+title: "Programmation Concurrente"
+subtitle: "Notes de cours"
+author: "Tom Berthoud"
+date: "HEIG-VD — 2025-2026"
+toc: true
+toc-depth: 3
+toc-title: "Table des matières"
+numbersections: true
+geometry: margin=2.5cm
+lang: fr
+colorlinks: true
+linkcolor: "[HTML]{2563EB}"
+urlcolor: "[HTML]{2563EB}"
+header-includes:
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhead[L]{\small Programmation Concurrente}
+  - \fancyhead[R]{\small Tom Berthoud}
+  - \fancyfoot[C]{\thepage}
+  - \renewcommand{\headrulewidth}{0.4pt}
+  - \let\oldtableofcontents\tableofcontents
+  - \renewcommand{\tableofcontents}{\oldtableofcontents\newpage}
+  # --- Code blocks stylisés (bulles arrondies) ---
+  - \usepackage{tcolorbox}
+  - \usepackage{booktabs}
+  - \usepackage{xcolor}
+  - \definecolor{codebg}{HTML}{F3F4F6}
+  - \definecolor{codeborder}{HTML}{D1D5DB}
+  - \definecolor{inlinebg}{HTML}{EEF2FF}
+  # Redéfinir le bloc Shaded de pandoc avec tcolorbox
+  - >
+    \newtcolorbox{shadedbox}{
+      colback=codebg,
+      colframe=codeborder,
+      boxrule=0.5pt,
+      arc=6pt,
+      left=8pt,
+      right=8pt,
+      top=6pt,
+      bottom=6pt,
+      fontupper=\small\ttfamily
+    }
+  - >
+    \newenvironment{Shaded}{\begin{shadedbox}}{\end{shadedbox}}
+  # Code inline avec fond gris
+  - >
+    \let\oldtexttt\texttt
+    \renewcommand{\texttt}[1]{\colorbox{inlinebg}{\oldtexttt{#1}}}
+include-before:
+  - \newpage

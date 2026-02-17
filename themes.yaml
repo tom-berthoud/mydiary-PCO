@@ -1,0 +1,25 @@
+themes:
+  - id: introduction
+    title: "Introduction à la programmation concurrente"
+  - id: processus
+    title: "Processus et appels systèmes"
+  - id: ipc
+    title: "Mécanismes IPC (System-V et POSIX)"
+  - id: threads
+    title: "Threads et implémentations"
+  - id: exclusion-mutuelle
+    title: "Exclusion mutuelle"
+  - id: abstractions-cpp
+    title: "Abstractions C++ (barrières, variables conditionnelles, verrous)"
+  - id: patrons
+    title: "Patrons de conception concurrents"
+  - id: openmp
+    title: "Introduction à OpenMP"
+  - id: architecture
+    title: "Architecture CPU et GPU"
+  - id: profiling
+    title: "Profiling"
+  - id: async
+    title: "Programmation asynchrone en C++"
+  - id: cache
+    title: "Mémoire cache, prédiction de branchement et MMU"
