@@ -56,7 +56,7 @@ Plus la taille de la mémoire est petite, plus les données sont rapidement acce
 On rafraicith la RAM en la réécrivant régulièrement pour éviter qu'elle ne perde son contenu, toute les 64ms environ.
 
 - VDD : alimentation
-- VSS : masse
+- VSS : masse 
 
 ### Chipset
 Le chipset est un ensemble de circuits intégrés qui gèrent les communications entre le processeur, la mémoire et les périphériques. Il est responsable de la gestion des entrées/sorties, de la mémoire et des interruptions.
