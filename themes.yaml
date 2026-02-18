@@ -1,6 +1,8 @@
 themes:
   - id: introduction
     title: "Introduction à la programmation concurrente"
+  - id: hardware
+    title: "Matériel et systèmes d'exploitation"
   - id: processus
     title: "Processus et appels systèmes"
   - id: ipc

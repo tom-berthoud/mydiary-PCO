@@ -21,6 +21,8 @@ header-includes:
   - \let\oldtableofcontents\tableofcontents
   - \renewcommand{\tableofcontents}{\oldtableofcontents\newpage}
   # --- Code blocks stylisés (bulles arrondies) ---
+  - \usepackage{tikz}
+  - \usetikzlibrary{arrows.meta,calc,positioning}
   - \usepackage{tcolorbox}
   - \usepackage{booktabs}
   - \usepackage{xcolor}
