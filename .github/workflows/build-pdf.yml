@@ -32,12 +32,7 @@ jobs:
         run: |
           mkdir -p dist
           cp notes_progconcur.pdf dist/notes_progconcur.pdf
-
-      - name: Upload PDF artifact (workflow)
-        uses: actions/upload-artifact@v4
-        with:
-          name: notes_progconcur
-          path: notes_progconcur.pdf
+          printf '<html><head><meta http-equiv="refresh" content="0;url=notes_progconcur.pdf"></head></html>' > dist/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

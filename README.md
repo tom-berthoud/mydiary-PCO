@@ -8,7 +8,7 @@ Les fichiers `semaine-*.md` contiennent les notes brutes. Le script `build.py` l
 
 Le PDF est publié à chaque push sur `main` via GitHub Actions + GitHub Pages :
 
-- [Ouvrir la dernière version du PDF](https://tom-berthoud.github.io/mydiary/notes_progconcur.pdf)
+- [Ouvrir la dernière version du PDF](https://tom-berthoud.github.io/mydiary-PCO/notes_progconcur.pdf)
 
 ## Générer le PDF
 
