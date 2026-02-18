@@ -4,6 +4,12 @@ Notes hebdomadaires du cours de Programmation Concurrente (HEIG-VD, 2025-2026).
 
 Les fichiers `semaine-*.md` contiennent les notes brutes. Le script `build.py` les regroupe par thème et génère un PDF via Pandoc + XeLaTeX.
 
+## PDF généré automatiquement
+
+Le PDF est publié à chaque push sur `main` via GitHub Actions + GitHub Pages :
+
+- [Ouvrir la dernière version du PDF](https://tomb.github.io/mydiary/notes_progconcur.pdf)
+
 ## Générer le PDF
 
 ```bash
