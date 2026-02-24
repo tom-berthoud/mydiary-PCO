@@ -2,22 +2,27 @@
 
 ## [introduction] Liste des connaissances
 
-- Processeur
-  - CPU (Central Processing Unit)
-  - MCU (Microcontroller Unit)
-  - GPU (Graphics Processing Unit)
-- Mémoire
-  - Mémoire VIVE (RAM)
-  - Mémoire MORTE (ROM)
-- Entrées/Sorties
-- Horloge
-- Bus de communication
-- Interruption
-- PSU (Power Supply Unit)
-- Transistor
-- ALU (Arithmetic Logic Unit)
-- Registre
-- Timers
+### Calcul / traitement
+- **Processeur** : composant principal qui exécute les instructions.
+- **CPU** (*Central Processing Unit*)
+- **MCU** (*Microcontroller Unit*)
+- **GPU** (*Graphics Processing Unit*)
+- **ALU** (*Arithmetic Logic Unit*) : unité de calcul arithmétique et logique.
+- **Registre** : mémoire très rapide interne au processeur.
+- **Timers** : compteurs matériels pour mesurer/planifier le temps.
+
+### Mémoire
+- **RAM** (*mémoire vive*) : mémoire volatile.
+- **ROM** (*mémoire morte*) : mémoire non volatile.
+
+### Communication / système
+- **Entrées / Sorties (E/S)** : échanges avec les périphériques.
+- **Bus de communication** : transport des données/adresses/signaux.
+- **Horloge** : cadence les opérations.
+- **Interruption** : signal qui interrompt l’exécution normale.
+- **PSU** (*Power Supply Unit*) : alimentation électrique.
+- **Transistor** : composant de base des circuits numériques.
+
 
 ### RISC vs CISC
 
