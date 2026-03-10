@@ -18,6 +18,7 @@ linkcolor: "[HTML]{1D4ED8}"
 urlcolor: "[HTML]{1D4ED8}"
 header-includes:
   - \usepackage{microtype}
+  - \usepackage{float}
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
   - \fancyhf{}
@@ -29,8 +30,8 @@ header-includes:
   - \setlength{\headheight}{14pt}
   - \setlength{\parindent}{0pt}
   - \setlength{\parskip}{0.45em}
-  - \let\oldtableofcontents\tableofcontents
-  - \renewcommand{\tableofcontents}{\oldtableofcontents\newpage}
+  - \usepackage{etoolbox}
+  - \AtBeginDocument{\let\oldmaketitle\maketitle\renewcommand{\maketitle}{\oldmaketitle\clearpage}\let\oldtableofcontents\tableofcontents\renewcommand{\tableofcontents}{\oldtableofcontents\clearpage}}
   - \usepackage{titlesec}
   - \usepackage{tocloft}
   - \usepackage{ragged2e}
@@ -79,5 +80,3 @@ header-includes:
   - >
     \let\oldtexttt\texttt
     \renewcommand{\texttt}[1]{\colorbox{inlinebg}{\oldtexttt{#1}}}
-include-before:
-  - \newpage
