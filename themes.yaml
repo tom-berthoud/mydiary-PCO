@@ -21,6 +21,8 @@ themes:
     title: "Introduction à OpenMP"
   - id: architecture
     title: "Architecture CPU et GPU"
+  - id: memoire-virtuelle
+    title: "Espace mémoire virtuelle"
   - id: profiling
     title: "Profiling"
   - id: async
