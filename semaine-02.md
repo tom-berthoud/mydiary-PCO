@@ -27,4 +27,3 @@ Pour écrire sur un autre terminal, on peut utiliser la commande `echo` suivie d
 ```bash
 echo "Hello, World!" > /dev/pts/1
 ```
-
