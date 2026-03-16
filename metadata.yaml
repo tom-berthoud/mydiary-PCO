@@ -9,7 +9,7 @@ numbersections: true
 geometry: margin=2.5cm
 lang: fr
 fontsize: 11pt
-linestretch: 1.12
+linestretch: 1.2
 mainfont: "TeX Gyre Pagella"
 sansfont: "TeX Gyre Heros"
 monofont: "DejaVu Sans Mono"
@@ -42,6 +42,8 @@ header-includes:
   - \titlespacing*{\section}{0pt}{1.2em}{0.5em}
   - \titleformat{\subsection}{\large\bfseries\color{heading}}{\thesubsection}{0.6em}{}
   - \titlespacing*{\subsection}{0pt}{1.0em}{0.35em}
+  - \titleformat{\subsubsection}{\normalsize\bfseries\color{heading}}{\thesubsubsection}{0.6em}{}
+  - \titlespacing*{\subsubsection}{0pt}{0.8em}{0.25em}
   - \renewcommand{\cfttoctitlefont}{\LARGE\bfseries\color{heading}}
   - \renewcommand{\cftsecfont}{\color{heading}}
   - \renewcommand{\cftsecpagefont}{\color{heading}}
@@ -53,11 +55,15 @@ header-includes:
   - \usetikzlibrary{arrows.meta,calc,positioning}
   - \usepackage{tcolorbox}
   - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \setlength{\tabcolsep}{8pt}
+  - \renewcommand{\arraystretch}{1.3}
   - \usepackage{xcolor}
   - \definecolor{codebg}{HTML}{F3F4F6}
   - \definecolor{codeborder}{HTML}{D1D5DB}
   - \definecolor{inlinebg}{HTML}{EEF2FF}
   # Redéfinir le bloc Shaded de pandoc avec tcolorbox
+  - \tcbuselibrary{breakable}
   - >
     \newtcolorbox{shadedbox}{
       colback=codebg,
@@ -68,7 +74,8 @@ header-includes:
       right=8pt,
       top=6pt,
       bottom=6pt,
-      fontupper=\small\ttfamily
+      fontupper=\small\ttfamily,
+      breakable
     }
   - >
     \ifcsname Shaded\endcsname
@@ -76,7 +83,12 @@ header-includes:
     \else
     \newenvironment{Shaded}{\begin{shadedbox}}{\end{shadedbox}}
     \fi
-  # Code inline avec fond gris
+  # Code inline avec fond bleu compact
   - >
     \let\oldtexttt\texttt
-    \renewcommand{\texttt}[1]{\colorbox{inlinebg}{\oldtexttt{#1}}}
+    \renewcommand{\texttt}[1]{%
+      \begingroup
+      \setlength{\fboxsep}{1.5pt}%
+      \colorbox{inlinebg}{\footnotesize\oldtexttt{#1}}%
+      \endgroup
+    }

@@ -231,53 +231,28 @@ Le **sémaphore** garantit qu'un seul processus à la fois accède à la mémoir
 
 ![Moniteur système](assets/moniteurSysteme.png){width=65% fig-pos="H"}
 
-## [threads] Threads avec std::thread
 
-En C++11, `std::thread` est l'abstraction de haut niveau pour créer des threads. Chaque thread doit être `join()`é ou `detach()`é — sinon le destructeur appelle `std::terminate`.
-
-```cpp
-// thread.cpp
-#include <iostream>
-#include <thread>
-
-void run() { std::cout << "Hello from thread!\n"; sleep(10); }
-
-int main() {
-    std::thread t(run);
-    std::cout << "Hello from main!\n";
-    t.join();   // attendre la fin du thread
-}
-```
-
-### 10 threads en parallèle
-
-```cpp
-// threads10.cpp
-#include <iostream>
-#include <thread>
-#include <vector>
-
-void run(int i) { std::cout << "Thread " << i << "\n"; sleep(1); }
-
-int main() {
-    std::vector<std::thread> threads;
-    for (int i = 0; i < 10; ++i)
-        threads.emplace_back(run, i);
-    for (auto& t : threads) t.join();
-}
-```
-
-L'ordre d'affichage est **non déterministe** — les threads s'exécutent en concurrence.
-
-### Threads vs processus
+## [threads] Threads vs processus
 
 | | Threads | Processus |
 |---|---|---|
-| Création | légère | coûteuse |
-| Mémoire | partagée | isolée |
-| Communication | directe | IPC (pipes, shm…) |
-| Sécurité | faible (erreur = tout le proc.) | forte (isolation) |
-| Débogage | difficile | plus simple |
+| Création | légère (`std::thread`) | coûteuse (`fork()` + `exec()`) |
+| Mémoire | partagée (heap, globals, fds) | isolée (MMU, espace virtuel dédié) |
+| Stack | privée par thread | privée par processus |
+| Communication | directe (variables partagées) | IPC (pipes, shm, sockets…) |
+| Synchronisation | mutex, condition\_variable, atomic | sémaphores POSIX, mmap partagé |
+| Changement de contexte | rapide (même espace mémoire) | lent (flush TLB, changement CR3) |
+| Crash | un thread plante tout le processus | un processus plante seul |
+| Sécurité | faible (accès mémoire partagé) | forte (isolation par le noyau) |
+| Débogage | difficile (races, deadlocks) | plus simple (isolation naturelle) |
+| Identifiant | TID (`gettid()`) dans le même PID | PID distinct |
+
+Observation en labo : avec `htop`, les 10 threads d'un même processus apparaissent sous le **même PID** (option `H` pour afficher les threads). Les 10 processus `fork()`és apparaissent chacun avec leur propre ligne.
+
+Quand utiliser quoi ?
+
+- Threads : tâches fortement couplées qui partagent beaucoup de données (ex. serveur web, calcul parallèle sur une matrice).
+- Processus : tâches indépendantes où l'isolation est critique (ex. workers d'un navigateur, micro-services).
 
 ## [exclusion-mutuelle] Race conditions et mutex
 

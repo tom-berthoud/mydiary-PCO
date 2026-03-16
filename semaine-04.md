@@ -22,40 +22,7 @@ Les threads sont plus légers que les processus car ils ne dupliquent pas tout l
 Concurrence  
 Plusieurs threads peuvent s'exécuter en parallèle ou en pseudo-parallèle dans un même processus.
 
-## Création de threads avec pthreads
-
-La manière la plus courante de créer des threads en C est d'utiliser la bibliothèque POSIX Threads appelée pthread.
-
-Bibliothèque :
-
-```c
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-
-void* thread_function(void* arg) {
-    int thread_id = *((int*)arg);
-    printf("Hello from thread %d\n", thread_id);
-    return NULL;
-}
-
-int main() {
-    pthread_t threads[5];
-    int thread_ids[5];
-
-    for (int i = 0; i < 5; i++) {
-        thread_ids[i] = i + 1;
-        pthread_create(&threads[i], NULL, thread_function, &thread_ids[i]);
-    }
-
-    for (int i = 0; i < 5; i++) {
-        pthread_join(threads[i], NULL);
-    }
-
-    return 0;
-}
-```
+## Création de threads bas niveau avec `clone()`
 
 **Flags importants de `clone()`**
 
