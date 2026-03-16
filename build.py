@@ -38,8 +38,9 @@ def parse_week_file(filepath):
     """
     path = Path(filepath)
     # Extraire le numéro de semaine du nom de fichier
-    match = re.search(r"semaine-(\d+)", path.stem)
+    match = re.search(r"semaine-(\d+)(labo)?", path.stem)
     week_num = int(match.group(1)) if match else 0
+    is_labo = bool(match and match.group(2))
 
     with open(path, encoding="utf-8") as f:
         lines = f.readlines()
@@ -67,6 +68,7 @@ def parse_week_file(filepath):
                     "content": "".join(current_lines).strip(),
                     "week_num": week_num,
                     "week_title": week_title,
+                    "is_labo": is_labo,
                     "filepath": str(path),
                 })
             current_tag = m.group(1)
@@ -83,6 +85,7 @@ def parse_week_file(filepath):
             "content": "".join(current_lines).strip(),
             "week_num": week_num,
             "week_title": week_title,
+            "is_labo": is_labo,
             "filepath": str(path),
         })
 
@@ -108,7 +111,10 @@ def build_combined_markdown(themes, all_sections):
 
         for section in theme_sections:
             output.append(f"## {section['title']}")
-            output.append(f"*Semaine {section['week_num']}*\n")
+            week_label = f"Semaine {section['week_num']:02d}"
+            if section.get("is_labo"):
+                week_label += " labo"
+            output.append(f"*{week_label}*\n")
             output.append(section["content"])
             output.append("")  # ligne vide
 
