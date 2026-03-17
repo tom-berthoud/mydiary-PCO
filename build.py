@@ -13,6 +13,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+SVG_RE = re.compile(r"(!\[[^\]]*\]\()([^)]+\.svg)(\))")
+
 import yaml
 
 SCRIPT_DIR = Path(__file__).parent
@@ -123,6 +125,22 @@ def build_combined_markdown(themes, all_sections):
     return "\n".join(output)
 
 
+def convert_svgs(content):
+    """Convertit les SVG référencés en PDF via inkscape et remplace les chemins."""
+    def replace(m):
+        svg_path = SCRIPT_DIR / m.group(2)
+        if not svg_path.exists():
+            return m.group(0)
+        pdf_path = svg_path.with_suffix(".pdf")
+        subprocess.run(
+            ["inkscape", "--export-filename", str(pdf_path), str(svg_path)],
+            capture_output=True, check=True,
+        )
+        return m.group(1) + str(pdf_path) + m.group(3)
+
+    return SVG_RE.sub(replace, content)
+
+
 def main():
     # Charger les thèmes
     themes = load_themes()
@@ -151,6 +169,7 @@ def main():
 
     # Construire le Markdown combiné
     combined = build_combined_markdown(themes, all_sections)
+    combined = convert_svgs(combined)
 
     # Lire le metadata et l'intégrer comme en-tête YAML du markdown
     with open(METADATA_FILE, encoding="utf-8") as f:

@@ -6,10 +6,10 @@ toc: true
 toc-depth: 3
 toc-title: "Table des matières"
 numbersections: true
-geometry: margin=2.5cm
+geometry: margin=1.5cm
 lang: fr
-fontsize: 11pt
-linestretch: 1.2
+fontsize: 10pt
+linestretch: 1.1
 mainfont: "TeX Gyre Pagella"
 sansfont: "TeX Gyre Heros"
 monofont: "DejaVu Sans Mono"
@@ -19,6 +19,7 @@ urlcolor: "[HTML]{1D4ED8}"
 header-includes:
   - \usepackage{microtype}
   - \usepackage{float}
+  - \floatplacement{figure}{H}
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
   - \fancyhf{}
@@ -43,6 +44,8 @@ header-includes:
   - \titleformat{\subsection}{\large\bfseries\color{heading}}{\thesubsection}{0.6em}{}
   - \titlespacing*{\subsection}{0pt}{1.0em}{0.35em}
   - \titleformat{\subsubsection}{\normalsize\bfseries\color{heading}}{\thesubsubsection}{0.6em}{}
+  - \titleformat{\paragraph}{\normalsize\bfseries}{}{0em}{}
+  - \titlespacing*{\paragraph}{0pt}{0.6em}{0.2em}
   - \titlespacing*{\subsubsection}{0pt}{0.8em}{0.25em}
   - \renewcommand{\cfttoctitlefont}{\LARGE\bfseries\color{heading}}
   - \renewcommand{\cftsecfont}{\color{heading}}
