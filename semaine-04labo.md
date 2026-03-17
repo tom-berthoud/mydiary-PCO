@@ -90,8 +90,8 @@ strace -f ./threadlow
 
 L'option `-f` permet de suivre également les processus ou threads enfants créés par le programme.
 
-| Appel système      | Rôle |
-|--------------------|------|
+| Appel système      | Rôle                                                              |
+|:-------------------|:------------------------------------------------------------------|
 | `execve`           | Lance l'exécution du programme. |
 | `openat` / `read`  | Ouvre et lit les bibliothèques nécessaires au programme. |
 | `mmap`             | Charge des fichiers ou réserve de la mémoire dans l'espace du processus. |
@@ -321,11 +321,22 @@ Les deux utilisent `clone` avec les mêmes flags — Python passe par la même l
 **Différence notable chez Python :** chaque thread appelle en plus `prctl(PR_SET_NAME, "Thread-1 (worke"...)` pour nommer le thread, et effectue des `mmap`/`munmap` supplémentaires pour allouer un espace mémoire dédié à l'interpréteur GIL.
 
 
-| | C++ (`pthread_join`) | Python (`thread.join`) |
-|---|---|---|
-| Appel principal | `futex(FUTEX_WAIT_BITSET\|FUTEX_CLOCK_REALTIME)` | `futex(FUTEX_WAIT_BITSET_PRIVATE\|FUTEX_CLOCK_REALTIME)` |
-| Mécanisme intermédiaire | Direct sur le `child_tid` | Passe d'abord par une condition variable interne Python (`FUTEX_WAIT_BITSET_PRIVATE` sur une adresse différente) puis par le `child_tid` |
-| Libération de la pile | `munmap` de 8 Mo (toute la pile) | `munmap` seulement de 16 Ko (le TLS Python) + `madvise MADV_DONTNEED` sur la pile |
++-------------------------+---------------------------------+------------------------------------------+
+|                         | C++ (`pthread_join`)            | Python (`thread.join`)                   |
++=========================+=================================+==========================================+
+| Appel principal         | `futex(FUTEX_WAIT_BITSET`       | `futex(FUTEX_WAIT_BITSET_PRIVATE`        |
+|                         | `\| FUTEX_CLOCK_REALTIME)`      | `\| FUTEX_CLOCK_REALTIME)`               |
++-------------------------+---------------------------------+------------------------------------------+
+| Mécanisme intermédiaire | Direct sur le `child_tid`       | Passe d'abord par une condition          |
+|                         |                                 | variable interne Python                  |
+|                         |                                 | (`FUTEX_WAIT_BITSET_PRIVATE` sur une     |
+|                         |                                 | adresse différente) puis par le          |
+|                         |                                 | `child_tid`                              |
++-------------------------+---------------------------------+------------------------------------------+
+| Libération de la pile   | `munmap` de 8 Mo                | `munmap` seulement de 16 Ko              |
+|                         | (toute la pile)                 | (le TLS Python) +                        |
+|                         |                                 | `madvise MADV_DONTNEED` sur la pile      |
++-------------------------+---------------------------------+------------------------------------------+
 
 En résumé, Python ajoute **une couche d'indirection** via ses propres primitives de synchronisation internes avant d'arriver au `futex` noyau.
 
@@ -375,9 +386,10 @@ t=1s      jthread attend la fin du thread (join automatique)
 
 `std::jthread` est apparu en C++20. Il n'est pas disponible en C++17 ou avant.
 
-#### Pourquoi pas `std::this_thread::sleep()` ?
+#### Pourquoi pas `sleep()` ?
 
-Cette fonction n'existe pas. Il faut obligatoirement spécifier une unité de temps :
+La fonction `std::this_thread::sleepfor()` est utilisée pour être dans le standard C++ et pour éviter les problèmes de signal qui peuvent interrompre `sleep()`. De plus, `sleep_for` est plus flexible car il peut être utilisé avec différentes unités de temps (secondes, millisecondes, etc.) et peut être facilement combiné avec d'autres fonctions de la bibliothèque `<chrono>`.
+
 ```cpp
 // durée relative : dort pendant X temps
 std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -531,13 +543,22 @@ int main() {
     std::this_thread::sleep_for(std::chrono::seconds(1));
     // On ouvre un bloc d'accolades pour limiter la portée du lock
     {
-        std::lock_guard<std::mutex> lock(mtx);
+
+        std::lock_guard<std::mutex> lock(mtx); // il verrouille le mutex à la création et le relâche à la destruction
+        // mtx.lock(); // fonctionne aussi mais il ne faut pas oublier de le relâcher manuellement avec mtx.unlock()
         readyToExit = true;
-    }
+        // mtx.unlock();
+
+    } // déverrouille le mutex à la fin du scope
     cv.notify_one(); // Réveille le thread worker
     t.join();
 }
 ```
+
+Voici un schéma de l'exécution du programme :
+
+![Schéma condition_variable](assets/condition_variable_schema.svg){width=80%}
+
 ### `std::unique_lock`
 
 C'est un gestionnaire de mutex plus flexible que `lock_guard`. Il prend le mutex à sa création et le relâche à sa destruction, mais contrairement à `lock_guard`, il permet de relâcher et reprendre le mutex manuellement en cours de route.
@@ -557,15 +578,17 @@ C'est obligatoire avec `condition_variable` car `cv.wait()` a besoin de relâche
 C'est un mécanisme qui permet à un thread de s'endormir en attendant qu'une condition devienne vraie, et à un autre thread de le réveiller quand c'est le cas.
 
 Il fonctionne toujours avec un mutex et une variable partagée qui représente la condition.
+
 ```cpp
 std::mutex mtx;
 std::condition_variable cv;
 bool readyToExit = false;
 ```
 
-Du côté du thread qui attend :
+Du côté du thread qui attend :$
+
 ```cpp
-std::unique_lock<std::mutex> lock(mtx);
+std::unique_lock<std::mutex> lock(mtx); // prend le mutex
 cv.wait(lock, []{ return readyToExit; });
 // continue ici quand readyToExit == true
 ```
@@ -573,12 +596,13 @@ cv.wait(lock, []{ return readyToExit; });
 `cv.wait()` fait trois choses dans l'ordre : il relâche le mutex, endort le thread sans consommer de CPU, puis à chaque réveil reprend le mutex et vérifie la condition. Si la condition est encore fausse il se rendort, sinon il sort.
 
 Du côté du thread qui notifie :
+
 ```cpp
 {
     std::lock_guard<std::mutex> lock(mtx);
     readyToExit = true;
-}               // mutex relâché avant notify
-cv.notify_one(); // réveille un thread en attente
+}// mutex relâché avant notify
+cv.notify_one(); // Envoie un signal pour réveiller les threads en attente
 ```
 
 `notify_one()` réveille un seul thread en attente. `notify_all()` les réveille tous, utile quand plusieurs threads attendent la même condition.
