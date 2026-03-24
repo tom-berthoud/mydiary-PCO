@@ -5,6 +5,8 @@ themes:
     title: "Matériel et systèmes d'exploitation"
   - id: linux
     title: "Linux et la base de la programmation système"
+  - id: Systèmeexploitation
+    title: "Système d'exploitation et gestion des processus"
   - id: processus
     title: "Processus et appels systèmes"
   - id: ipc

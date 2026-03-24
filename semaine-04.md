@@ -56,75 +56,121 @@ Les threads POSIX (`pthread`) utilisent `clone()` en interne pour créer les thr
 
 La mémoire virtuelle est une technique de gestion de la mémoire qui permet à un système d'exploitation de donner l'illusion d'avoir plus de mémoire physique que ce qui est réellement disponible. Elle utilise un espace d'adressage virtuel pour chaque processus, qui peut être plus grand que la mémoire physique réelle. Lorsque le processus accède à une adresse virtuelle, le système d'exploitation traduit cette adresse en une adresse physique correspondante, en utilisant des mécanismes tels que la pagination ou la segmentation.
 
+```{=latex}
 \begin{center}
 \begin{tikzpicture}[
-  proc/.style={draw, thick, minimum width=4.6cm, minimum height=3.2cm},
-  mem/.style={draw, thick, minimum width=1.3cm, minimum height=4.0cm},
-  mmu/.style={draw, thick, minimum width=2.0cm, minimum height=1.2cm, align=center},
-  box/.style={draw, thick, minimum width=2.0cm, minimum height=2.2cm},
-  lab/.style={font=\bfseries},
-  arr/.style={->, thick, >=Latex},
-  map/.style={->, thick, rounded corners=4pt, >=Latex}
+  scale=0.85, every node/.style={scale=0.85},
+  lbl/.style={font=\small\bfseries},
+  cell/.style={rectangle, draw, thick, minimum width=1.4cm, minimum height=0.45cm, font=\scriptsize},
+  ->, >=Latex, thick
 ]
-  % Processus
-  \node[proc] (procA) at (0,3.0) {};
-  \node[lab] at (-1.2,3.2) {A};
-  \node[proc] (procB) at (0,-2.1) {};
-  \node[lab] at (-1.2,-1.9) {B};
+  \definecolor{cA}{HTML}{60A5FA}
+  \definecolor{cB}{HTML}{34D399}
+  \definecolor{cMMU}{HTML}{FBBF24}
 
-  % Structures internes des processus
-  \draw[thick] (0.9,4.2) rectangle (1.5,2.0);
-  \draw[thick] (0.9,3.8) -- (1.5,3.8);
-  \draw[thick] (0.9,3.4) -- (1.5,3.4);
-  \draw[thick] (0.9,3.0) -- (1.5,3.0);
-  \draw[thick] (0.9,2.6) -- (1.5,2.6);
+  % === Processus A ===
+  \node[lbl] at (0.5,4.2) {Processus A};
+  \draw[thick, rounded corners, fill=cA!10] (-0.5,0.8) rectangle (1.5,3.9);
+  \node[cell, fill=cA!25] (a4) at (0.5,3.5) {Code};
+  \node[cell, fill=cA!25] (a3) at (0.5,2.9) {Data};
+  \node[cell, fill=cA!25] (a2) at (0.5,2.3) {Heap};
+  \node[cell, fill=cA!25] (a1) at (0.5,1.7) {Stack};
 
-  \draw[thick] (0.9,-0.9) rectangle (1.5,-3.1);
-  \draw[thick] (0.9,-1.3) -- (1.5,-1.3);
-  \draw[thick] (0.9,-1.7) -- (1.5,-1.7);
-  \draw[thick] (0.9,-2.1) -- (1.5,-2.1);
-  \draw[thick] (0.9,-2.5) -- (1.5,-2.5);
+  % === Processus B ===
+  \node[lbl] at (0.5,-1.3) {Processus B};
+  \draw[thick, rounded corners, fill=cB!10] (-0.5,-5.0) rectangle (1.5,-1.6);
+  \node[cell, fill=cB!25] (b4) at (0.5,-2.0) {Code};
+  \node[cell, fill=cB!25] (b3) at (0.5,-2.6) {Data};
+  \node[cell, fill=cB!25] (b2) at (0.5,-3.2) {Heap};
+  \node[cell, fill=cB!25] (b1) at (0.5,-3.8) {Stack};
 
-  % Mémoire virtuelle
-  \node[mem] (virtA) at (7.0,3.0) {};
-  \node[mem] (virtB) at (7.0,-2.1) {};
-  \node[lab] at (7.0,5.4) {Virtual Memory};
+  % === Accolade gauche : même adresse virtuelle ===
+  \draw[-, decorate, decoration={brace, amplitude=6pt, mirror}, thick, purple!70]
+    (-0.7,3.9) -- (-0.7,-5.0)
+    node[midway, left=8pt, align=center, font=\tiny\bfseries, purple!70] {Même @\\virtuelle\\0x7fff...};
 
-  \draw[thick] (6.35,3.4) -- (7.65,3.4);
-  \draw[thick] (6.35,3.25) -- (7.65,3.25);
-  \draw[thick] (6.35,3.1) -- (7.65,3.1);
+  % === Mémoire virtuelle A ===
+  \node[lbl] at (5,4.2) {Espace virtuel A};
+  \fill[cA!8] (3.8,0.5) rectangle (6.2,3.9);
+  \draw[thick] (3.8,0.5) rectangle (6.2,3.9);
+  \foreach \y/\t in {3.5/0xFFFF, 2.9/page 3, 2.3/page 2, 1.7/page 1, 1.1/0x0000} {
+    \draw[gray!50] (3.8,\y-0.25) -- (6.2,\y-0.25);
+    \node[font=\tiny] at (5,\y) {\t};
+  }
 
-  \draw[thick] (6.35,-1.7) -- (7.65,-1.7);
-  \draw[thick] (6.35,-1.85) -- (7.65,-1.85);
-  \draw[thick] (6.35,-2.0) -- (7.65,-2.0);
+  % === Mémoire virtuelle B ===
+  \node[lbl] at (5,-1.3) {Espace virtuel B};
+  \fill[cB!8] (3.8,-5.0) rectangle (6.2,-1.6);
+  \draw[thick] (3.8,-5.0) rectangle (6.2,-1.6);
+  \foreach \y/\t in {-2.0/0xFFFF, -2.6/page 3, -3.2/page 2, -3.8/page 1, -4.4/0x0000} {
+    \draw[gray!50] (3.8,\y-0.25) -- (6.2,\y-0.25);
+    \node[font=\tiny] at (5,\y) {\t};
+  }
 
-  % MMU et table
-  \node[mmu] (mmu) at (11.0,2.8) {MMU};
-  \node[box] (ptable) at (11.0,-0.8) {};
-  \draw[thick] (10.55,-0.65) rectangle (11.05,-0.15);
-  \draw[thick] (11.25,-0.65) rectangle (11.75,-0.15);
-  \draw[arr] (11.05,-0.4) -- (11.25,-0.4);
+  % === MMU ===
+  \node[rectangle, draw, very thick, rounded corners, fill=cMMU!30,
+        minimum width=1.8cm, minimum height=1.2cm, align=center, font=\bfseries]
+        (mmu) at (9,1.2) {MMU};
+  \node[font=\scriptsize, below] at (9,0.5) {traduction};
+  \node[font=\scriptsize, below] at (9,0.1) {d'adresses};
 
-  % Mémoire physique
-  \node[mem, minimum height=6.8cm] (phys) at (14.8,0.35) {};
-  \node[lab] at (14.8,5.4) {Physical Memory};
-  \draw[thick] (14.15,3.2) -- (15.45,3.2);
-  \draw[thick] (14.15,3.05) -- (15.45,3.05);
-  \draw[thick] (14.15,2.9) -- (15.45,2.9);
-  \draw[thick] (14.15,-0.4) -- (15.45,-0.4);
-  \draw[thick] (14.15,-0.55) -- (15.45,-0.55);
-  \draw[thick] (14.15,-0.7) -- (15.45,-0.7);
+  % Table des pages
+  \node[rectangle, draw, thick, rounded corners, fill=cMMU!10,
+        minimum width=1.8cm, minimum height=1.6cm, align=center]
+        (ptable) at (9,-2.8) {};
+  \node[lbl, font=\scriptsize\bfseries] at (9,-2.1) {Table des pages};
+  \node[font=\tiny] at (9,-2.5) {virt $\rightarrow$ phys};
+  \node[font=\tiny] at (9,-2.9) {0x7f $\rightarrow$ 0x3A};
+  \node[font=\tiny] at (9,-3.3) {0x7f $\rightarrow$ 0x5C};
+  \draw[thick] (mmu) -- (ptable);
 
-  % Flèches et annotations
-  \draw[map] (1.55,3.6) .. controls (3.4,4.4) and (4.8,4.2) .. node[above] {0x7fffeude} (6.2,3.45);
-  \draw[map] (1.55,-1.6) .. controls (3.4,-0.8) and (4.8,-1.0) .. node[above] {0x7fffeude} (6.2,-1.75);
+  % === Mémoire physique (RAM) ===
+  \node[lbl] at (13,4.2) {Mém. physique};
+  \fill[gray!5] (11.6,-5.0) rectangle (14.4,3.9);
+  \draw[very thick] (11.6,-5.0) rectangle (14.4,3.9);
 
-  \draw[arr] (7.65,3.2) -- (9.95,3.0);
-  \draw[arr] (7.65,-1.85) .. controls (8.7,-1.85) and (9.4,-0.6) .. (10.0,-0.5);
-  \draw[arr] (12.0,2.8) .. controls (13.0,2.8) and (13.3,3.2) .. (14.1,3.05);
-  \draw[arr] (12.0,-0.8) .. controls (13.0,-0.8) and (13.3,-0.4) .. (14.1,-0.55);
-  \draw[thick] (11.0,1.7) -- (11.0,0.35);
+  % Cadres physiques
+  \fill[cA!25] (11.6,3.0) rectangle (14.4,3.6);
+  \node[font=\tiny] at (13,3.3) {page A (0x3A)};
+  \fill[gray!15] (11.6,2.4) rectangle (14.4,3.0);
+  \node[font=\tiny, gray] at (13,2.7) {libre};
+  \fill[cB!25] (11.6,1.8) rectangle (14.4,2.4);
+  \node[font=\tiny] at (13,2.1) {page B (0x5C)};
+  \fill[cA!25] (11.6,1.2) rectangle (14.4,1.8);
+  \node[font=\tiny] at (13,1.5) {page A (0x3B)};
+  \fill[gray!15] (11.6,0.6) rectangle (14.4,1.2);
+  \node[font=\tiny, gray] at (13,0.9) {libre};
+  \fill[cB!25] (11.6,0.0) rectangle (14.4,0.6);
+  \node[font=\tiny] at (13,0.3) {page B (0x5D)};
+  \fill[cA!25] (11.6,-0.6) rectangle (14.4,0.0);
+  \node[font=\tiny] at (13,-0.3) {page A (0x3C)};
+  \fill[gray!15] (11.6,-1.2) rectangle (14.4,-0.6);
+  \node[font=\tiny, gray] at (13,-0.9) {libre};
+
+  % Lignes de séparation
+  \foreach \y in {3.6,3.0,2.4,1.8,1.2,0.6,0.0,-0.6,-1.2} {
+    \draw[gray!40] (11.6,\y) -- (14.4,\y);
+  }
+  \node[font=\tiny, gray] at (13,-2.0) {...};
+
+  % === Accolade droite : adresses physiques différentes ===
+  \draw[-, decorate, decoration={brace, amplitude=6pt}, thick, red!70]
+    (14.6,3.6) -- (14.6,-0.6)
+    node[midway, right=8pt, align=center, font=\tiny\bfseries, red!70] {@ phys.\\différentes};
+
+  % === Flèches processus -> virtuel ===
+  \draw[cA!70, thick] (1.5,2.6) -- (3.8,2.6);
+  \draw[cB!70, thick] (1.5,-2.9) -- (3.8,-2.9);
+
+  % === Flèches virtuel -> MMU ===
+  \draw[cA!70, thick] (6.2,2.6) .. controls (7.3,2.6) and (7.8,2.0) .. (8.1,1.6);
+  \draw[cB!70, thick] (6.2,-2.9) .. controls (7.3,-2.9) and (7.8,-0.5) .. (8.1,0.8);
+
+  % === Flèches MMU -> physique ===
+  \draw[cA!70, thick, dashed] (9.9,1.6) .. controls (10.5,2.5) and (11.0,3.0) .. (11.6,3.3);
+  \draw[cB!70, thick, dashed] (9.9,0.8) .. controls (10.5,0.8) and (11.0,1.5) .. (11.6,2.1);
 \end{tikzpicture}
 \end{center}
+```
 
 Ce schéma illustre que deux processus distincts peuvent utiliser la même adresse virtuelle apparente, alors que la MMU la traduit vers des emplacements physiques différents.
