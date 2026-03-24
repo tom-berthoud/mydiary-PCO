@@ -55,7 +55,7 @@ header-includes:
   - \setlength{\cftbeforesecskip}{4pt}
   # --- Code blocks stylisés (bulles arrondies) ---
   - \usepackage{tikz}
-  - \usetikzlibrary{arrows.meta,calc,positioning}
+  - \usetikzlibrary{arrows.meta,calc,positioning,decorations.pathreplacing}
   - \usepackage{tcolorbox}
   - \usepackage{booktabs}
   - \usepackage{longtable}
