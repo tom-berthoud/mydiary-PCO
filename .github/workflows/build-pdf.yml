@@ -17,12 +17,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc texlive-xetex texlive-latex-extra texlive-lang-french
+          sudo apt-get install -y pandoc texlive-xetex texlive-latex-extra texlive-lang-french inkscape
           pip install pyyaml
 
       - name: Build PDF
@@ -35,7 +35,7 @@ jobs:
           printf '<html><head><meta http-equiv="refresh" content="0;url=notes_progconcur.pdf"></head></html>' > dist/index.html
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
@@ -48,4 +48,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
