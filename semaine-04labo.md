@@ -388,7 +388,7 @@ t=1s      jthread attend la fin du thread (join automatique)
 
 #### Pourquoi pas `sleep()` ?
 
-La fonction `std::this_thread::sleepfor()` est utilisée pour être dans le standard C++ et pour éviter les problèmes de signal qui peuvent interrompre `sleep()`. De plus, `sleep_for` est plus flexible car il peut être utilisé avec différentes unités de temps (secondes, millisecondes, etc.) et peut être facilement combiné avec d'autres fonctions de la bibliothèque `<chrono>`.
+La fonction `std::this_thread::sleep_for()` est utilisée pour rester dans le standard C++ et pour éviter les problèmes de signal qui peuvent interrompre `sleep()`. De plus, `sleep_for` est plus flexible car il peut être utilisé avec différentes unités de temps (secondes, millisecondes, etc.) et peut être facilement combiné avec d'autres fonctions de la bibliothèque `<chrono>`.
 
 ```cpp
 // durée relative : dort pendant X temps
@@ -514,7 +514,7 @@ int main() {
 ```
 `std::atomic<bool>` est utilisé pour garantir que les modifications à `keepRunning` sont visibles entre les threads sans nécessiter de mutex. Le thread `worker` vérifie régulièrement la valeur de `keepRunning` et s'arrête proprement lorsque celle-ci devient `false`.
 
-`std::atomic` permets d'assurer la sécurité des données partagées entre les threads sans recourir à des mécanismes de verrouillage plus lourd. `std::mutex` ou `std::lock_guard` seraient nécessaires si nous avions besoin de protéger une section critique plus complexe, mais pour un simple flag d'arrêt, `std::atomic<bool>` est suffisant et plus performant.
+`std::atomic` permet d'assurer la sécurité des données partagées entre les threads sans recourir à des mécanismes de verrouillage plus lourds. `std::mutex` ou `std::lock_guard` seraient nécessaires si nous avions besoin de protéger une section critique plus complexe, mais pour un simple flag d'arrêt, `std::atomic<bool>` est suffisant et plus performant.
 
 ## Attente conditionnelle avec `std::condition_variable`
 
@@ -585,7 +585,7 @@ std::condition_variable cv;
 bool readyToExit = false;
 ```
 
-Du côté du thread qui attend :$
+Du côté du thread qui attend :
 
 ```cpp
 std::unique_lock<std::mutex> lock(mtx); // prend le mutex

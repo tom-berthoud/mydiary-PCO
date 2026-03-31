@@ -57,8 +57,8 @@
 ```
 
 La RAM est une mémoire volatile utilisée pour stocker les données et les programmes en cours d'exécution. Elle est rapide mais perd son contenu lorsque l'alimentation est coupée.
-Plus la taille de la mémoire est petite, plus les données sont rapidement accessibles. Cependant, elle s'efface plus rapidement que les mémoires plus grandes.
-On rafraicith la RAM en la réécrivant régulièrement pour éviter qu'elle ne perde son contenu, toute les 64ms environ.
+En général, plus une mémoire est proche du CPU (registres, caches), plus elle est rapide, mais sa capacité est plus faible.
+La DRAM est rafraîchie périodiquement pour conserver les charges électriques des cellules (ordre de grandeur : ~64 ms).
 
 - VDD : alimentation
 - VSS : masse 
@@ -75,5 +75,4 @@ De nos jours, le chipset est souvent intégré dans le processeur lui-même, ce 
 ### Système d'exploitation
 Le système d'exploitation est un logiciel qui gère les ressources matérielles de l'ordinateur et fournit des services aux programmes. Il est responsable de la gestion de la mémoire, des processus, des fichiers et des périphériques.
 Il existe différents types de systèmes d'exploitation, tels que Windows, macOS, Linux, etc. Chacun a ses propres caractéristiques et avantages, mais tous ont pour objectif de permettre aux utilisateurs d'interagir avec l'ordinateur de manière efficace et sécurisée.
-
 
