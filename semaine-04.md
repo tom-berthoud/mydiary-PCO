@@ -31,7 +31,7 @@ Plusieurs threads peuvent s'exécuter en parallèle ou en pseudo-parallèle dans
 | `CLONE_VM` | partage la mémoire entre le parent et le thread |
 | `CLONE_FS` | partage les informations du système de fichiers (cwd, root) |
 | `CLONE_FILES` | partage les descripteurs de fichiers |
-| `CLONE_SIGHAND` | partage les handlers de signaux |
+| `CLONE_SIGHAND` | partage les gestionnaires de signaux |
 | `CLONE_THREAD` | fait partie du même groupe de threads |
 
 Pour créer un thread similaire à un pthread :
@@ -50,7 +50,7 @@ Les threads POSIX (`pthread`) utilisent `clone()` en interne pour créer les thr
 | Portabilité | Linux uniquement | POSIX (Linux, macOS, BSD) |
 | Complexité | plus difficile | plus simple |
 | Gestion de la stack | manuelle | automatique |
-| Utilisation | systèmes, kernel | applications |$
+| Utilisation | systèmes, noyau | applications |
 
 ## [memoire-virtuelle] La mémoire virtuelle
 
