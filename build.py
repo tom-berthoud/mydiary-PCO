@@ -97,6 +97,7 @@ def parse_week_file(filepath):
 def build_combined_markdown(themes, all_sections):
     """Construit le Markdown combiné organisé par thème."""
     output = []
+    first_theme = True
 
     for theme in themes:
         tid = theme["id"]
@@ -109,7 +110,13 @@ def build_combined_markdown(themes, all_sections):
         if not theme_sections:
             continue
 
+        if not first_theme:
+            # Force un saut de page entre les grands thèmes dans le PDF.
+            output.append(r"\clearpage")
+            output.append("")
+
         output.append(f"# {title}\n")
+        first_theme = False
 
         for section in theme_sections:
             output.append(f"## {section['title']}")

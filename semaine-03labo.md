@@ -225,13 +225,6 @@ int main() {
 
 Le **sémaphore** garantit qu'un seul processus à la fois accède à la mémoire partagée.
 
-![htop — vue des 10 processus enfants](assets/htop.png){width=70% fig-pos="H"}
-
-![pstree — arborescence parent/enfants](assets/pstree.png){width=55% fig-pos="H"}
-
-![Moniteur système](assets/moniteurSysteme.png){width=65% fig-pos="H"}
-
-
 ## [threads] Threads vs processus
 
 | | Threads | Processus |
@@ -246,8 +239,6 @@ Le **sémaphore** garantit qu'un seul processus à la fois accède à la mémoir
 | Sécurité | faible (accès mémoire partagé) | forte (isolation par le noyau) |
 | Débogage | difficile (races, deadlocks) | plus simple (isolation naturelle) |
 | Identifiant | TID (`gettid()`) dans le même PID | PID distinct |
-
-Observation en labo : avec `htop`, les 10 threads d'un même processus apparaissent sous le **même PID** (option `H` pour afficher les threads). Les 10 processus `fork()`és apparaissent chacun avec leur propre ligne.
 
 Quand utiliser quoi ?
 

@@ -338,7 +338,7 @@ Les deux utilisent `clone` avec les mêmes flags — Python passe par la même l
 |                         |                                 | `madvise MADV_DONTNEED` sur la pile      |
 +-------------------------+---------------------------------+------------------------------------------+
 
-En résumé, Python ajoute **une couche d'indirection** via ses propres primitives de synchronisation internes avant d'arriver au `futex` noyau.
+En résumé, Python ajoute une couche d'indirection via ses propres primitives de synchronisation internes avant d'arriver au `futex` noyau.
 
 En Python, `threading.Thread` attend une fonction `target` dont la **valeur de retour est ignorée**. Le thread ne dispose d'aucun mécanisme natif pour transmettre une valeur de retour au thread appelant (contrairement à `pthread_join` en C++ qui récupère le `void*`).
 
@@ -555,9 +555,9 @@ int main() {
 }
 ```
 
-Voici un schéma de l'exécution du programme :
+### Shéma du fonctionnement de `std::condition_variable`
 
-![Schéma condition_variable](assets/condition_variable_schema.svg){width=80%}
+![Schéma condition_variable](assets/condition_variable.svg){width=60%}
 
 ### `std::unique_lock`
 
