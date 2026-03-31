@@ -3,7 +3,8 @@
 ## [semaphores] Sémaphores
 
 Un sémaphore est un compteur synchronisé utilisé pour contrôler l'accès à une ressource partagée dans un environnement concurrent. Il peut être utilisé pour résoudre des problèmes de synchronisation tels que les conditions de course.
-Un sémaphore expose typiquement trois opérations : initialiser, `P`/`wait` (décrémenter ou bloquer si la valeur est déjà à 0) et `V`/`post` (incrémenter et réveiller un thread en attente). 
+Un sémaphore expose typiquement trois opérations : initialiser, `P`/`wait` (décrémenter ou bloquer si la valeur est déjà à 0) et `V`/`post` (incrémenter et réveiller un thread en attente).
+
 ![Schéma de sémaphore](assets/2147d6c6ab884c6dc8ae477cb2b16ed7.png){width=200px}
 
 

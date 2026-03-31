@@ -2,25 +2,14 @@
 
 ## [threads] Threads et processus légers
 
-Un thread, également appelé processus léger, est une unité d'exécution plus légère qu'un processus traditionnel. Contrairement à un processus, qui possède son propre espace mémoire et ses propres ressources, les threads partagent le même espace mémoire et les mêmes ressources à l'intérieur d'un processus.
+### Threads d'un meme processus
 
-## Caractéristiques des threads
+- Ils partagent le meme espace memoire.
+- Ils partagent aussi les ressources du processus : descripteurs de fichiers, variables globales, donnees statiques et heap.
+- Ils sont plus legers qu'un processus, car ils ne recreent pas toute la memoire du programme.
+- Ils peuvent s'executer en meme temps, ou a tour de role selon le processeur.
+- Une synchronisation est necessaire pour eviter les conflits d'acces aux donnees.
 
-Partage de l'espace mémoire  
-Les threads d'un même processus utilisent le même espace mémoire. Cela permet une communication rapide entre eux mais nécessite une synchronisation pour éviter les conflits d'accès aux données.
-
-Partage des ressources  
-Les threads partagent plusieurs ressources du processus :
-- descripteurs de fichiers
-- variables globales
-- données statiques
-- heap
-
-Légèreté  
-Les threads sont plus légers que les processus car ils ne dupliquent pas tout l'espace mémoire du programme.
-
-Concurrence  
-Plusieurs threads peuvent s'exécuter en parallèle ou en pseudo-parallèle dans un même processus.
 
 ## Création de threads bas niveau avec `clone()`
 
@@ -87,7 +76,7 @@ La mémoire virtuelle est une technique de gestion de la mémoire qui permet à 
   % === Accolade gauche : même adresse virtuelle ===
   \draw[-, decorate, decoration={brace, amplitude=6pt, mirror}, thick, purple!70]
     (-0.7,3.9) -- (-0.7,-5.0)
-    node[midway, left=8pt, align=center, font=\tiny\bfseries, purple!70] {Même @\\virtuelle\\0x7fff...};
+    node[midway, left=8pt, align=center, font=\tiny\bfseries, purple!70] {Même addresse\\virtuelle\\0x7fff...};
 
   % === Mémoire virtuelle A ===
   \node[lbl] at (5,4.2) {Espace virtuel A};
@@ -116,7 +105,7 @@ La mémoire virtuelle est une technique de gestion de la mémoire qui permet à 
 
   % Table des pages
   \node[rectangle, draw, thick, rounded corners, fill=cMMU!10,
-        minimum width=1.8cm, minimum height=1.6cm, align=center]
+        minimum width=2.5cm, minimum height=1.8cm, align=center]
         (ptable) at (9,-2.8) {};
   \node[lbl, font=\scriptsize\bfseries] at (9,-2.1) {Table des pages};
   \node[font=\tiny] at (9,-2.5) {virt $\rightarrow$ phys};
@@ -125,7 +114,7 @@ La mémoire virtuelle est une technique de gestion de la mémoire qui permet à 
   \draw[thick] (mmu) -- (ptable);
 
   % === Mémoire physique (RAM) ===
-  \node[lbl] at (13,4.2) {Mém. physique};
+  \node[lbl] at (13,4.2) {Mémoire physique};
   \fill[gray!5] (11.6,-5.0) rectangle (14.4,3.9);
   \draw[very thick] (11.6,-5.0) rectangle (14.4,3.9);
 
@@ -156,7 +145,7 @@ La mémoire virtuelle est une technique de gestion de la mémoire qui permet à 
   % === Accolade droite : adresses physiques différentes ===
   \draw[-, decorate, decoration={brace, amplitude=6pt}, thick, red!70]
     (14.6,3.6) -- (14.6,-0.6)
-    node[midway, right=8pt, align=center, font=\tiny\bfseries, red!70] {@ phys.\\différentes};
+    node[midway, right=8pt, align=center, font=\tiny\bfseries, red!70] {addresse\\physique\\différentes};
 
   % === Flèches processus -> virtuel ===
   \draw[cA!70, thick] (1.5,2.6) -- (3.8,2.6);
