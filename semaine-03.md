@@ -119,7 +119,7 @@ int main() {
 
 ## [processus] Les signaux
 
-Les signaux sont un autre mécanisme de communication entre processus sous POSIX. Ils sont utilisés pour notifier un processus qu'un événement s'est produit et le cas échéant réveiller un processus dormant. Les signaux peuvent être envoyés par le noyau, par un autre processus, ou par le processus lui-même. Les signaux sont utilisés pour gérer les interruptions, les erreurs, et les événements asynchrones.
+Les signaux sont un autre mécanisme de communication entre processus sous POSIX. Ils sont utilisés pour notifier un processus qu'un événement s'est produit et, le cas échéant, réveiller un processus dormant. Les signaux peuvent être envoyés par le noyau, par un autre processus, ou par le processus lui-même. Les signaux sont utilisés pour gérer les interruptions, les erreurs, et les événements asynchrones.
 
 Voici une liste des signaux que nous allons voir :
 
@@ -134,8 +134,8 @@ Voici une liste des signaux que nous allons voir :
   
 Par exemple, on peut envoyer le signal `SIGKILL` à un processus pour le terminer immédiatement en utilisant la commande `kill` :
 
-```
-bashkill -SIGKILL <pid>
+```bash
+kill -SIGKILL <pid>
 ```
 
 On peut récupérer le PID (Process ID) d'un processus en utilisant la commande `ps` ou `pgrep`. Par exemple, pour trouver le PID d'un processus nommé `myprocess`, on peut utiliser :
@@ -171,5 +171,4 @@ int main() {
     return 0;
 }
 ```
-
 

@@ -71,7 +71,7 @@ L'ordonnanceur est un composant du système d'exploitation qui gère l'exécutio
 \begin{tikzpicture}[
   stp/.style={rectangle, draw, thick, rounded corners=4pt, minimum height=0.8cm, minimum width=1.8cm, font=\scriptsize\bfseries, align=center},
   ->, >=Latex, thick
-]****
+]
   \definecolor{cKS}{HTML}{60A5FA}
   \definecolor{cSave}{HTML}{F87171}
   \definecolor{cRR}{HTML}{FBBF24}
@@ -146,7 +146,7 @@ L'ordonnanceur est un composant du système d'exploitation qui gère l'exécutio
 
 ### Interruptions et préemption
 
-On peut demander une interruption ce qui permet de gagné en performance car maintenant le $\Delta t$ n'est plus fixe, il est dynamique et dépend de l'activité du processus. Par exemple, si un processus fait une opération d'entrée/sortie, il peut être interrompu pour laisser la place à un autre processus pendant que l'opération se termine.
+Une interruption peut déclencher une préemption, ce qui améliore l'utilisation du CPU : le $\Delta t$ n'est plus strictement fixe et l'ordonnanceur peut réagir à l'activité réelle des processus. Par exemple, si un processus part en entrée/sortie, le CPU peut immédiatement être attribué à un autre processus prêt.
 
 ### Liste des états d'un processus
 
@@ -158,7 +158,7 @@ On peut demander une interruption ce qui permet de gagné en performance car mai
 
 ### Priorités et starvation
 
-L'ordonnanceur peut attribuer des priorités aux processus pour favoriser certains types de tâches (ex. : temps réel). Cependant, cela peut entraîner une **starvation** : les processus à faible priorité peuvent ne jamais être exécutés s'il y a toujours des processus à haute priorité. Les priorités vont de -20 (la plus haute) à 19 (la plus basse). Plus la priorité est basse, plus le processus a de chances d'être exécuté et ne pas être interrompu.
+L'ordonnanceur peut attribuer des priorités aux processus pour favoriser certains types de tâches (ex. : temps réel). Cependant, cela peut entraîner une **starvation** : les processus à faible priorité peuvent ne jamais être exécutés s'il y a toujours des processus à haute priorité. Sous Linux (nice), les priorités vont de `-20` (priorité la plus haute) à `19` (priorité la plus basse) : plus la valeur est faible, plus le processus est favorisé.
 
 
 ## [Systèmeexploitation] Registres CPU et mémoire (Stack / Heap)
