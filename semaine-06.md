@@ -175,8 +175,7 @@ Les registres sont des petites cases mémoire ultra-rapides directement dans le 
 \begin{tikzpicture}[
   reg/.style={rectangle, draw, thick, minimum width=1.8cm, minimum height=0.6cm, fill=blue!10, font=\small\ttfamily},
   lbl/.style={font=\small\bfseries},
-  ->, >=Latex, thick
-]
+  ->, >=Latex, thick]
   % CPU
   \node[lbl] at (-0.5,3.5) {CPU};
   \draw[thick, rounded corners, fill=gray!5] (-1.5,-2.5) rectangle (0.5,3.2);
@@ -200,25 +199,27 @@ Les registres sont des petites cases mémoire ultra-rapides directement dans le 
   \draw[->, very thick, red!50] (5.5,1.5) -- (5.5,0.8) node[midway, right, font=\small] {$\downarrow$ croît};
 
   % Espace libre
-  \node[font=\small\itshape, gray] at (5.5,0.4) {espace libre};
+  \node[font=\small\itshape, gray] at (5.5,0.5) {espace libre};
 
   % Heap
+  \begin{scope}[yshift=-3]
+  
   \fill[green!8] (3.5,-0.2) rectangle (7.5,-2.2);
   \draw[thick] (3.5,-0.2) rectangle (7.5,-2.2);
   \node[lbl, green!50!black] at (5.5,-0.5) {Heap (tas)};
   \node[font=\small] at (5.5,-1.0) {malloc / new};
   \node[font=\small] at (5.5,-1.5) {allocations dynamiques};
-  \draw[->, very thick, green!50!black] (5.5,-0.2) -- (5.5,0.1) node[midway, right, font=\small] {$\uparrow$ croît};
+  \draw[->, very thick, green!50!black] (5.5,-0.2) -- (5.5,0.3) node[midway, right, font=\small] {$\uparrow$ croît};
 
   % Code/Data
   \fill[gray!10] (3.5,-2.5) rectangle (7.5,-3.5);
   \draw[thick] (3.5,-2.5) rectangle (7.5,-3.5);
   \node[lbl] at (5.5,-2.8) {Code / Data};
   \node[font=\small] at (5.5,-3.2) {instructions, constantes};
-
+  \end{scope}
   % Flèches registres -> mémoire
-  \draw[red!60, dashed, thick] (sp.east) -- ++(1.5,0) |- (3.5,1.5) node[pos=0.3, above, font=\scriptsize\color{red!60}] {pointe vers le sommet};
-  \draw[orange!70, dashed, thick] (fp.east) -- ++(2,0) |- (3.5,2.2) node[pos=0.25, above, font=\scriptsize\color{orange!70}] {pointe vers le cadre};
+  \draw[red!60, dashed, thick] (sp.east) -- ++(1.5,0) |- (3.5,1.5) node[pos=0.3, yshift=-1.8cm, xshift=2, above, font=\scriptsize\color{red!60}] {pointe vers le sommet};
+  \draw[orange!70, dashed, thick] (fp.east) -- ++(2,0) |- (3.5,2.2) node[pos=0.25,yshift=1.2cm, xshift=-13, above, font=\scriptsize\color{orange!70}] {pointe vers le cadre};
 
   % Adresses
   \node[font=\tiny, gray] at (8.2,3.8) {0xFFFF};
