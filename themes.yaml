@@ -19,6 +19,8 @@ themes:
     title: "Synchronisation"
   - id: abstractions-cpp
     title: "Abstractions C++ (barrières, variables conditionnelles, verrous)"
+  - id: docker
+    title: "Conteneurs et Docker"
   - id: patrons
     title: "Patrons de conception concurrents"
   - id: openmp
