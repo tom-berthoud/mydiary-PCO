@@ -16,7 +16,7 @@
 **Flags importants de `clone()`**
 
 | Flag | Effet |
-|---|---|
+|:----------------|:----------------------------------------------------------|
 | `CLONE_VM` | partage la mémoire entre le parent et le thread |
 | `CLONE_FS` | partage les informations du système de fichiers (cwd, root) |
 | `CLONE_FILES` | partage les descripteurs de fichiers |
@@ -34,7 +34,7 @@ Les threads POSIX (`pthread`) utilisent `clone()` en interne pour créer les thr
 **Comparaison `clone()` vs `pthread`**
 
 | | `clone()` | `pthread` |
-|---|---|---|
+|:----------------------|:------------------------------|:------------------------------|
 | Niveau | bas niveau (appel système) | haut niveau (bibliothèque) |
 | Portabilité | Linux uniquement | POSIX (Linux, macOS, BSD) |
 | Complexité | plus difficile | plus simple |
@@ -100,8 +100,8 @@ La mémoire virtuelle est une technique de gestion de la mémoire qui permet à 
   \node[rectangle, draw, very thick, rounded corners, fill=cMMU!30,
         minimum width=1.8cm, minimum height=1.2cm, align=center, font=\bfseries]
         (mmu) at (9,1.2) {MMU};
-  \node[font=\scriptsize, below] at (9,0.5) {traduction};
-  \node[font=\scriptsize, below] at (9,0.1) {d'adresses};
+  \node[font=\scriptsize, below right] at (9,0.5) {traduction};
+  \node[font=\scriptsize, below right] at (9,0.1) {d'adresses};
 
   % Table des pages
   \node[rectangle, draw, thick, rounded corners, fill=cMMU!10,

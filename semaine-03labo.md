@@ -5,7 +5,7 @@
 Chaque processus a un espace mémoire **isolé** géré par la MMU, divisé en segments :
 
 | Segment | Accès | Rôle |
-|---|---|---|
+|:-----------|:--------|:----------------------------------------------------------|
 | `.text` | `r-x` | code exécutable |
 | `.data` | `rw-` | variables globales initialisées |
 | `.bss` | `rw-` | variables globales non initialisées |
@@ -36,7 +36,7 @@ ps aux | grep hello
 **Fichiers utiles dans `/proc/<pid>` :**
 
 | Fichier | Contenu |
-|---|---|
+|:----------|:----------------------------------------------------------|
 | `maps` | cartographie mémoire : adresses, permissions, bibliothèques |
 | `status` | état, PID/PPID, mémoire (`VmRSS`), signaux |
 | `cmdline` | ligne de commande utilisée au lancement |
@@ -75,7 +75,7 @@ int main() {
 ### États (`ps -l`)
 
 | État | Nom | Description |
-|---|---|---|
+|:------|:----------------|:----------------------------------------------------------|
 | R | Running | en exécution ou prêt |
 | S | Sleeping | en attente d'un événement |
 | D | Uninterruptible | attente d'E/S bloquante |
@@ -228,7 +228,7 @@ Le **sémaphore** garantit qu'un seul processus à la fois accède à la mémoir
 ## [threads] Threads vs processus
 
 | | Threads | Processus |
-|---|---|---|
+|:------------------------|:-------------------------------------|:-------------------------------------|
 | Création | légère (`std::thread`) | coûteuse (`fork()` + `exec()`) |
 | Mémoire | partagée (heap, globals, fds) | isolée (MMU, espace virtuel dédié) |
 | Stack | privée par thread | privée par processus |
@@ -322,7 +322,7 @@ int main() {
 ### Impact sur les performances
 
 | Version | Résultat | Temps |
-|---|---|---|
+|:------------|:-----------------------------|:----------|
 | Sans mutex | 2 386 340 / 20 000 000 | 0.129 s |
 | Avec mutex | 20 000 000 / 20 000 000 | 10.022 s |
 

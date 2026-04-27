@@ -221,7 +221,7 @@ Dans ce programme, les threads sont créés et gérés de manière plus structur
 Les appels système utilisés par `pthreads` pour créer et attendre les threads incluent :
 
 | Appel | Rôle |
-|---|---|
+|:--------------------------------|:----------------------------------------------------------|
 | `mmap(...MAP_STACK...)` | Alloue la pile du nouveau thread (~8 Mo) |
 | `madvise(...MADV_GUARD_INSTALL)` | Protège la première page (guard page contre stack overflow) |
 | `set_robust_list` | Initialise la liste des mutexes robustes du thread |
@@ -478,7 +478,7 @@ Main : je termine.
 ### Tableau récapitulatif
 
 | Scénario | Comportement | Risque |
-|---|---|---|
+|:-------------------------------------------------|:------------------------------|:----------------|
 | `main()` termine avant le thread, sans `join()` | `std::terminate()` | Critique |
 | `main()` termine avant le thread, avec `join()` | `main()` attend proprement | Sûr |
 | Thread termine avant `main()` | `join()` retourne instantanément | Sûr |
