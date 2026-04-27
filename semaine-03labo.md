@@ -283,7 +283,7 @@ mov counter, rax   ; 3. stocker
 
 Deux threads peuvent charger la même valeur → un incrément est perdu.
 
-![Séquence sans mutex — perte d'incréments](assets/UmlSequence1.drawio.png){width=65% fig-pos="H"}
+![Séquence sans mutex — perte d'incréments](assets/UmlSequence1.drawio.png){width=60% fig-pos="H"}
 
 ### La solution : mutex
 
