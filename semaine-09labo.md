@@ -209,21 +209,55 @@ L'option de `unshare` qui correspond à l'isolation réseau que vous observez av
 Architecture cible :
 
 ```{=latex}
-\begin{center}
-\begin{tikzpicture}[
-  node distance=0.6cm,
-  every node/.style={font=\small},
-  box/.style={draw, rounded corners, minimum height=0.8cm, minimum width=2.2cm}
-]
-  \node[box, fill=blue!10] (cont) {Conteneur};
-  \node[below=0cm of cont, font=\footnotesize] {ns réseau dédié};
-  \node[box, right=1.4cm of cont, fill=gray!15] (host) {Hôte};
-  \node[box, right=1.4cm of host, fill=orange!20] (net) {Internet};
 
-  \draw[<->] (cont) -- node[above, font=\footnotesize] {veth1 $\leftrightarrow$ veth0} (host);
-  \draw[->] (host) -- node[above, font=\footnotesize] {NAT MASQUERADE} node[below, font=\footnotesize] {via eth0} (net);
+\begin{tikzpicture}[
+  >=Latex,
+  every node/.style={font=\small},
+  ns/.style={draw, rounded corners=3pt, dashed, inner sep=0.35cm},
+  box/.style={draw, rounded corners=6pt, minimum height=1.15cm, minimum width=3.0cm, align=center},
+  iface/.style={font=\footnotesize\ttfamily},
+  note/.style={font=\footnotesize, align=center}
+]
+  \node[box, fill=blue!12, draw=blue!55, xshift=-1.8cm] (cont) {\textbf{Conteneur}\\
+    \texttt{veth1}\\
+    \texttt{10.200.1.2/24}\\
+    route: \texttt{default via 10.200.1.1}};
+
+  \node[box, fill=green!12, draw=green!45!black, right=2.3cm of cont] (host) {\textbf{Hôte}\\
+    \texttt{veth0}\\
+    \texttt{10.200.1.1/24}\\
+    \texttt{ip\_forward=1}};
+
+  \node[box, fill=orange!20, draw=orange!60!black, right=2.3cm of host] (eth) {\textbf{Sortie hôte}\\
+    \texttt{eth0}\\
+    IP publique / LAN};
+
+  \node[box, fill=gray!12, draw=gray!60, minimum width=2.0cm, right=1.6cm of eth] (net) {Internet};
+
+  \node[ns, fit=(cont), label={[font=\footnotesize]above:namespace réseau du conteneur}] (contns) {};
+  \node[ns, fit=(host)(eth), label={[font=\footnotesize]above:namespace réseau de l'hôte}] (hostns) {};
+
+  \draw[<->, thick] (cont.east) -- node[above, note] {paire \texttt{veth}\\``câble'' virtuel} (host.west);
+  \draw[->, thick] (host.east) -- node[above, note] {routage} node[below, note] {\texttt{veth0} $\rightarrow$ \texttt{eth0}} (eth.west);
+  \draw[->, thick] (eth.east) -- (net.west);
+
+  \draw[->, thick, orange!80!black]
+    ([yshift=-0.45cm]cont.east) -- ([yshift=-0.45cm]host.west)
+    node[midway, below, note] {src: \texttt{10.200.1.2}};
+  \draw[->, thick, orange!80!black]
+    ([yshift=-0.45cm]host.east) -- ([yshift=-0.45cm]eth.west)
+    node[midway, below, note] {POSTROUTING};
+  \draw[->, thick, orange!80!black]
+    ([yshift=-0.45cm]eth.east) -- ([yshift=-0.45cm]net.west)
+    node[yshift=-0.1cm,midway, below, note] {src devient IP de \texttt{eth0}};
+
+  \node[note, fill=orange!10, draw=orange!55!black, rounded corners=4pt,
+        below=0.65cm of eth, inner sep=3pt] (nat) {
+    \texttt{iptables -t nat -A POSTROUTING -s 10.200.1.0/24 -o eth0 -j MASQUERADE}
+  };
+  \draw[->, orange!70!black] (nat.north) -- ([yshift=-0.55cm]eth.south);
 \end{tikzpicture}
-\end{center}
+
 ```
 
 Étapes (correspondent au labo) :
