@@ -71,7 +71,7 @@ docker compose down
 
 La différence importante avec une machine virtuelle est que le conteneur ne démarre pas un nouveau noyau. Il reste un processus Linux de l'hôte, isolé par les mécanismes vus précédemment.
 
-## [cache] Mémoire cache
+## [performance] Mémoire cache
 
 ### Hiérarchie L1/L2/L3 et RAM
 

@@ -33,5 +33,7 @@ themes:
     title: "Profiling"
   - id: async
     title: "Programmation asynchrone en C++"
-  - id: cache
-    title: "Mémoire cache, prédiction de branchement et MMU"
+  - id : performance
+    title: "Optimisation de la performance"
+  - id: protocoles
+    title: "Protocoles de communication"
