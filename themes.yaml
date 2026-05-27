@@ -1,39 +1,33 @@
 themes:
   - id: introduction
-    title: "Introduction à la programmation concurrente"
+    title: "Concepts de base de la concurrence"
   - id: hardware
-    title: "Matériel et systèmes d'exploitation"
+    title: "Matériel et architecture système"
   - id: linux
-    title: "Linux et la base de la programmation système"
-  - id: Systèmeexploitation
-    title: "Système d'exploitation et gestion des processus"
+    title: "Linux et programmation système"
+  - id: systeme-exploitation
+    title: "Système d'exploitation"
   - id: processus
-    title: "Processus et appels systèmes"
+    title: "Processus et appels système"
   - id: ipc
-    title: "Mécanismes IPC (System-V et POSIX)"
+    title: "Communication inter-processus"
+  - id: memoire-virtuelle
+    title: "Mémoire virtuelle"
   - id: threads
-    title: "Threads et implémentations"
+    title: "Threads et cycle de vie"
+  - id: openmp
+    title: "Parallélisme avec OpenMP"
+  - id: async
+    title: "Programmation asynchrone"
   - id: exclusion-mutuelle
     title: "Exclusion mutuelle"
-  - id: semaphores
+  - id: synchronisation
     title: "Synchronisation"
-  - id: abstractions-cpp
-    title: "Abstractions C++ (barrières, variables conditionnelles, verrous)"
+  - id: patrons
+    title: "Patrons concurrents"
   - id: docker
     title: "Conteneurs et Docker"
-  - id: patrons
-    title: "Patrons de conception concurrents"
-  - id: openmp
-    title: "Introduction à OpenMP"
-  - id: architecture
-    title: "Architecture CPU et GPU"
-  - id: memoire-virtuelle
-    title: "Espace mémoire virtuelle"
-  - id: profiling
-    title: "Profiling"
-  - id: async
-    title: "Programmation asynchrone en C++"
-  - id : performance
-    title: "Optimisation de la performance"
+  - id: performance
+    title: "Performance CPU et mémoire"
   - id: protocoles
     title: "Protocoles de communication"

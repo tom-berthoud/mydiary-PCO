@@ -1,6 +1,6 @@
 # Semaine 08 — 2026-04-14
 
-## [threads] Thread Pool
+## [patrons] Thread Pool
 
 ### Le problème : créer un thread coûte cher
 

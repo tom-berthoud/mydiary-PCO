@@ -1,6 +1,6 @@
 # Semaine 06 — 2026-03-24
 
-## [Systèmeexploitation] Ordonnanceur (scheduler)
+## [systeme-exploitation] Ordonnanceur (scheduler)
 
 L'ordonnanceur est un composant du système d'exploitation qui gère l'exécution des processus en décidant quel processus doit être exécuté à un moment donné. Il utilise des algorithmes pour déterminer l'ordre d'exécution des processus, en tenant compte de facteurs tels que la priorité, le temps d'exécution, et les ressources nécessaires.
 
@@ -161,7 +161,7 @@ Une interruption peut déclencher une préemption, ce qui améliore l'utilisatio
 L'ordonnanceur peut attribuer des priorités aux processus pour favoriser certains types de tâches (ex. : temps réel). Cependant, cela peut entraîner une **starvation** : les processus à faible priorité peuvent ne jamais être exécutés s'il y a toujours des processus à haute priorité. Sous Linux (nice), les priorités vont de `-20` (priorité la plus haute) à `19` (priorité la plus basse) : plus la valeur est faible, plus le processus est favorisé.
 
 
-## [Systèmeexploitation] Registres CPU et mémoire (Stack / Heap)
+## [systeme-exploitation] Registres CPU et mémoire (Stack / Heap)
 
 Les registres sont des petites cases mémoire ultra-rapides directement dans le CPU. Lors d'un **context switch**, l'ordonnanceur doit sauvegarder tous ces registres pour pouvoir restaurer l'état du processus plus tard.
 

@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import unicodedata
 from pathlib import Path
 
 SVG_RE = re.compile(r"(!\[[^\]]*\]\()([^)]+\.svg)(\))")
@@ -94,6 +95,50 @@ def parse_week_file(filepath):
     return sections
 
 
+def normalize_title(title):
+    """Normalise un titre pour détecter les répétitions visuelles."""
+    without_accents = unicodedata.normalize("NFKD", title)
+    without_accents = "".join(
+        c for c in without_accents if not unicodedata.combining(c)
+    )
+    return re.findall(r"[a-z0-9]+", without_accents.lower())
+
+
+def is_redundant_heading(section_title, theme_title):
+    """Retourne True si le titre de section répète le titre du thème."""
+    section_words = set(normalize_title(section_title))
+    theme_words = set(normalize_title(theme_title))
+    ignored_words = {
+        "a",
+        "au",
+        "aux",
+        "avec",
+        "base",
+        "de",
+        "des",
+        "du",
+        "en",
+        "et",
+        "introduction",
+        "la",
+        "le",
+        "les",
+        "programmation",
+    }
+
+    section_words -= ignored_words
+    theme_words -= ignored_words
+
+    if not section_words or not theme_words:
+        return False
+
+    return (
+        section_words == theme_words
+        or section_words.issubset(theme_words)
+        or theme_words.issubset(section_words)
+    )
+
+
 def build_combined_markdown(themes, all_sections):
     """Construit le Markdown combiné organisé par thème."""
     output = []
@@ -119,11 +164,16 @@ def build_combined_markdown(themes, all_sections):
         first_theme = False
 
         for section in theme_sections:
-            output.append(f"## {section['title']}")
             week_label = f"Semaine {section['week_num']:02d}"
             if section.get("is_labo"):
                 week_label += " labo"
-            output.append(f"*{week_label}*\n")
+
+            if is_redundant_heading(section["title"], title):
+                output.append(f"## {week_label}\n")
+            else:
+                output.append(f"## {section['title']}")
+                output.append(f"*{week_label}*\n")
+
             output.append(section["content"])
             output.append("")  # ligne vide
 

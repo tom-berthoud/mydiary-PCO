@@ -401,7 +401,7 @@ std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::se
 `sleep_for` est la plus courante. `sleep_until` est utile quand on veut synchroniser sur une horloge précise plutôt que sur une durée.
 
 
-## Cycle de vie d'un thread
+## [threads] Cycle de vie d'un thread
 
 ### Le processus principal se termine avant le thread
 
@@ -486,7 +486,7 @@ Main : je termine.
 
 Règle d'or : tout thread créé doit être soit `join()`-é, soit `detach()`-é avant la destruction de l'objet `std::thread` — et `detach()` ne doit être utilisé que si vous êtes certain que le thread n'accède pas à des ressources locales de `main()`.
 
-## Arrêt coopératif d'un thread avec `std::atomic<bool>`
+## [threads] Arrêt coopératif d'un thread avec `std::atomic<bool>`
 
 Voici un exemple de programme qui utilise une variable `std::atomic<bool>` pour signaler à un thread de s'arrêter de manière coopérative.
 
@@ -516,7 +516,7 @@ int main() {
 
 `std::atomic` permet d'assurer la sécurité des données partagées entre les threads sans recourir à des mécanismes de verrouillage plus lourds. `std::mutex` ou `std::lock_guard` seraient nécessaires si nous avions besoin de protéger une section critique plus complexe, mais pour un simple flag d'arrêt, `std::atomic<bool>` est suffisant et plus performant.
 
-## Attente conditionnelle avec `std::condition_variable`
+## [synchronisation] Attente conditionnelle avec `std::condition_variable`
 
 Voici un exemple de programme qui utilise `std::condition_variable` pour synchroniser deux threads.
 

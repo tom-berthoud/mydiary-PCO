@@ -1,6 +1,6 @@
 # Semaine 07 — 2026-03-31
 
-## [Exclusion mutuelle] Sémaphores
+## [synchronisation] Sémaphores
 
 Un sémaphore est un compteur synchronisé utilisé pour contrôler l'accès à une ressource partagée dans un environnement concurrent. Il peut être utilisé pour résoudre des problèmes de synchronisation tels que les conditions de course.
 Un sémaphore expose typiquement trois opérations : initialiser, `P`/`wait` (décrémenter ou bloquer si la valeur est déjà à 0) et `V`/`post` (incrémenter et réveiller un thread en attente).
@@ -136,4 +136,3 @@ void buveur() {
 ### Test-and-set
 
 Cette technique permet de vérifier et de modifier une variable atomiquement. Elle est souvent utilisée pour implémenter des verrous (locks) et des sémaphores. L'idée est de tester la valeur d'une variable et de la mettre à jour en une seule opération atomique, ce qui évite les conditions de course.
-
