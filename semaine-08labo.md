@@ -123,7 +123,7 @@ private:
 - **`condition.wait(lock, predicate)`** libère le mutex pendant l'attente et le reprend au réveil. Le prédicat évite les *spurious wakeups* (réveils sans cause).
 - **`activeTasks`** distingue "queue vide" de "tout est fini". Sans ce compteur, `waitAll()` reviendrait dès que la queue est vide, alors que des workers sont peut-être encore en train d'exécuter une tâche.
 - **`notify_one`** sur `enqueue` (un seul worker à réveiller), **`notify_all`** sur la fin d'une tâche (`waitAll` doit être réveillé) et au shutdown.
-- Le destructeur fait un *graceful shutdown* : flag `stop`, `notify_all`, `join` de tous les workers. Les tâches encore en queue ne sont **pas** exécutées (le worker quitte si `stop && tasks.empty()`).
+- Le destructeur fait un *graceful shutdown* : flag `stop`, `notify_all`, `join` de tous les workers. Les tâches déjà en queue sont terminées avant l'arrêt ; un worker ne quitte que lorsque `stop && tasks.empty()`.
 
 ### Application sur Mandelbrot
 
