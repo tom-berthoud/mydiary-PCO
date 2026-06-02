@@ -129,9 +129,9 @@ Le problème : une ressource partagée est très souvent lue et rarement modifi�
   \node[actor, fill=blue!10] (l1) at (0, 1.25) {Lecteur 1};
   \node[actor, fill=blue!10] (l2) at (0, 0.25) {Lecteur 2};
   \node[actor, fill=blue!10] (l3) at (0,-0.75) {Lecteur 3};
-  \node[actor, fill=red!10]  (w)  at (8, 0.25) {Rédacteur};
+  \node[actor, fill=red!10]  (w)  at (9, 0) {Rédacteur};
 
-  \draw[->, thick, blue!70!black] (l1.east) -- node[above, note] {read lock partagé} (r.west);
+  \draw[->, thick, blue!70!black] (l1.east) -- node[above right, note, xshift=-9] {read lock partagé} (r.west);
   \draw[->, thick, blue!70!black] (l2.east) -- (r.west);
   \draw[->, thick, blue!70!black] (l3.east) -- (r.west);
 
@@ -187,17 +187,17 @@ Un risque classique est la **famine des rédacteurs** : si des lecteurs arrivent
   box/.style={draw, rounded corners=5pt, minimum width=2.35cm, minimum height=0.75cm, align=center},
   note/.style={font=\footnotesize, align=center}
 ]
-  \node[box, fill=blue!10] (reader) at (0,1.0) {Nouveau lecteur};
-  \node[box, fill=red!10] (writer) at (0,-1.0) {Nouveau rédacteur};
+  \node[box, fill=blue!10] (reader) at (-1.5,1.0) {Nouveau lecteur};
+  \node[box, fill=red!10] (writer) at (-1.5,-1.0) {Nouveau rédacteur};
 
   \node[state, fill=gray!10] (gate) at (4,0) {Moniteur\\readers, writerActive, waitingWriters};
-  \node[state, fill=yellow!15] (res) at (8,0) {Ressource\\partagée};
+  \node[state, fill=yellow!15] (res) at (10,0) {Ressource\\partagée};
 
-  \draw[->, thick] (reader.east) -- node[above, note] {entre si aucun rédacteur} (gate.west);
-  \draw[->, thick] (writer.east) -- node[below, note] {annonce son attente} (gate.west);
+  \draw[->, thick] (reader.east) -- node[above right, note,  xshift=-5] {entre si aucun rédacteur} (gate.west);
+  \draw[->, thick] (writer.east) -- node[below right, note , xshift=-5] {annonce son attente} (gate.west);
   \draw[->, thick] (gate.east) -- node[above, note] {acces autorise} (res.west);
 
-  \node[note, below=0.75cm of gate] {
+  \node[note, below=1.5cm of gate] {
     Condition lecteur: !writerActive \&\& waitingWriters == 0 \quad
     Condition rédacteur: !writerActive \&\& readers == 0
   };
