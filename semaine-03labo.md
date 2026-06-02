@@ -327,3 +327,4 @@ int main() {
 | Avec mutex | 20 000 000 / 20 000 000 | 10.022 s |
 
 Le mutex est **~78× plus lent** mais garantit la cohérence. Pour un simple compteur, préférer `std::atomic<size_t>`.
+A noter que le thread qui lock le mutex est le seul à pouvoir le débloquer. Un thread ne peut pas unlock un mutex qu'il n'a pas locké.
