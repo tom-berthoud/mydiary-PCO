@@ -148,14 +148,6 @@ L'ordonnanceur est un composant du système d'exploitation qui gère l'exécutio
 
 Une interruption peut déclencher une préemption, ce qui améliore l'utilisation du CPU : le $\Delta t$ n'est plus strictement fixe et l'ordonnanceur peut réagir à l'activité réelle des processus. Par exemple, si un processus part en entrée/sortie, le CPU peut immédiatement être attribué à un autre processus prêt.
 
-### Liste des états d'un processus
-
-- **Running** : le processus est en cours d'exécution sur le CPU.
-- **Runnable** : le processus est prêt à être exécuté mais attend son tour.
-- **Sleeping** : le processus attend un événement (ex. : entrée/sortie) et ne peut pas être exécuté.
-- **Stopped** : le processus est suspendu (ex. : par un signal) et ne peut pas être exécuté.
-- **Zombie** : le processus a terminé son exécution mais attend que son parent récupère son statut de sortie.
-
 ### Priorités et starvation
 
 L'ordonnanceur peut attribuer des priorités aux processus pour favoriser certains types de tâches (ex. : temps réel). Cependant, cela peut entraîner une **starvation** : les processus à faible priorité peuvent ne jamais être exécutés s'il y a toujours des processus à haute priorité. Sous Linux (nice), les priorités vont de `-20` (priorité la plus haute) à `19` (priorité la plus basse) : plus la valeur est faible, plus le processus est favorisé.
