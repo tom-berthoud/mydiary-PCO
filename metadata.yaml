@@ -6,7 +6,7 @@ toc: true
 toc-depth: 3
 toc-title: "Table des matières"
 numbersections: true
-geometry: margin=1.5cm
+geometry: "a4paper, margin=1.5cm"
 lang: fr
 fontsize: 10pt
 linestretch: 1.1
@@ -32,7 +32,11 @@ header-includes:
   - \setlength{\parindent}{0pt}
   - \setlength{\parskip}{0.45em}
   - \usepackage{etoolbox}
+  - \usepackage{graphicx}
+  - \usepackage{eso-pic}
   - \AtBeginDocument{\let\oldmaketitle\maketitle\renewcommand{\maketitle}{\oldmaketitle\clearpage}\let\oldtableofcontents\tableofcontents\renewcommand{\tableofcontents}{\oldtableofcontents\clearpage}}
+  # Page de titre : couverture A4 en image pleine page (fond, sans marge) à la place du titre texte
+  - \AtBeginDocument{\renewcommand{\maketitle}{\thispagestyle{empty}\AddToShipoutPictureBG*{\put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{assets/titre1.png}}}\null\clearpage}}
   - \usepackage{titlesec}
   - \usepackage{tocloft}
   - \usepackage{ragged2e}
