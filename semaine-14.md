@@ -18,6 +18,83 @@ int main() {
     return 0;
 }
 ```
+
+À la compilation, il faut activer OpenMP avec `-fopenmp` (sinon les `#pragma` sont simplement ignorés et le code tourne en séquentiel) :
+
+```bash
+g++ -fopenmp -O2 hello.cpp -o hello
+```
+
+> **Note perso.** On n'a fait que survoler OpenMP en une fois, mais c'est une bibliothèque vraiment intéressante qui vaut le coup d'y revenir et d'étoffer ces notes. Là où `std::thread` demande de tout gérer à la main (création, `join`, mutex, partage), OpenMP fait la même chose en **une ligne de pragma**, sans toucher à la logique du code. C'est un outil très utilisé en pratique (calcul scientifique, traitement d'image, simulation, HPC) — à reprendre tranquillement pour creuser `tasks`, `sections`, le `nowait`, etc.
+
+### `parallel for` — paralléliser une boucle
+
+Le cas le plus courant : répartir automatiquement les itérations d'une boucle sur les threads. Aucune dépendance entre les itérations n'est requise (sinon condition de course).
+
+```cpp
+#include <omp.h>
+#include <vector>
+
+int main() {
+    std::vector<double> v(1'000'000);
+
+    #pragma omp parallel for
+    for (size_t i = 0; i < v.size(); ++i) {
+        v[i] = i * 2.0;   // chaque itération est indépendante
+    }
+}
+```
+
+OpenMP découpe la plage `[0, size)` en blocs et donne un bloc à chaque thread. C'est l'équivalent « gratuit » du découpage en bandes qu'on faisait à la main dans le labo Mandelbrot.
+
+### `reduction` — le piège de la somme partagée
+
+Si plusieurs threads accumulent dans une même variable, on retombe sur la race condition vue avec `counter`. La clause `reduction` règle ça proprement : chaque thread a sa **copie privée**, et OpenMP combine les copies à la fin.
+
+```cpp
+double sum = 0.0;
+
+#pragma omp parallel for reduction(+:sum)
+for (size_t i = 0; i < v.size(); ++i) {
+    sum += v[i];        // pas de race : chaque thread accumule dans sa copie
+}
+// sum contient le total correct, sans mutex
+```
+
+Sans `reduction(+:sum)`, le résultat serait faux (incréments perdus) — exactement le problème du compteur sans mutex.
+
+### `critical` et `atomic` — section critique
+
+Quand une opération ne peut pas être exprimée en `reduction`, on protège la section partagée. `critical` est l'équivalent OpenMP d'un mutex ; `atomic` est plus léger mais limité aux opérations simples (`++`, `+=`…).
+
+```cpp
+#pragma omp parallel for
+for (int i = 0; i < n; ++i) {
+    int r = compute(i);
+    #pragma omp critical      // un seul thread à la fois ici
+    {
+        results.push_back(r);
+    }
+}
+```
+
+### `schedule` et `num_threads`
+
+On peut régler la répartition du travail et le nombre de threads :
+
+```cpp
+#pragma omp parallel for num_threads(4) schedule(dynamic, 100)
+for (int i = 0; i < n; ++i) { heavy_work(i); }
+```
+
+| Clause | Effet |
+|:----|:-------------|
+| `schedule(static)` | blocs égaux fixés à l'avance — idéal si chaque itération coûte pareil |
+| `schedule(dynamic, k)` | les threads piochent des paquets de `k` itérations à la demande — idéal si le coût varie (ex. Mandelbrot) |
+| `num_threads(n)` | force `n` threads pour cette région |
+
+`schedule(dynamic)` joue le même rôle que le *decomposition factor* du thread pool du labo Mandelbrot : il évite qu'un thread tombé sur une zone « lourde » devienne le goulot pendant que les autres ont fini.
+
 ## [async] thread vs async
 
 - `std::thread` : Permet de créer et de gérer des threads manuellement. Vous devez gérer la synchronisation, la communication entre les threads, et vous assurer que les threads sont correctement joints ou détachés.
