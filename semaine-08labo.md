@@ -167,4 +167,4 @@ Sans décomposition (`factor = 1`), si une bande contient une zone dense (proche
 
 ### Conclusion
 
-Certe le thread pool permet d'être plus efficace mais il faut surtout ce rappeler que améliorer l'algorithme est souvent plus payant que d'améliorer la parallélisation. En effet, si on améliore l'algorithme de calcul de Mandelbrot pour qu'il soit plus rapide, on peut réduire le temps de calcul de manière significative sans même toucher à la parallélisation.
+Certes le thread pool permet d'être plus efficace mais il faut surtout se rappeler qu'améliorer l'algorithme est souvent plus payant que d'améliorer la parallélisation. En effet, si on améliore l'algorithme de calcul de Mandelbrot pour qu'il soit plus rapide, on peut réduire le temps de calcul de manière significative sans même toucher à la parallélisation.

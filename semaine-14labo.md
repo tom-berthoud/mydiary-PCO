@@ -109,7 +109,7 @@ Points importants :
 
 ### Patron lecteurs-rédacteurs
 
-> **Note perso** Nous n'avons pas parlé de ce patron en cours, mais il est très utile pour les caches et les bases de données. Vu qu'il est égalememnt dans la fiche de cours, j'ai décidé de l'inclure dans ce résumé.
+> **Note perso** Nous n'avons pas parlé de ce patron en cours, mais il est très utile pour les caches et les bases de données. Vu qu'il est également dans la fiche de cours, j'ai décidé de l'inclure dans ce résumé.
 
 Le problème : une ressource partagée est très souvent lue et rarement modifiée. Si on utilise un simple `std::mutex`, même deux lectures indépendantes se bloquent mutuellement. Le patron lecteurs-rédacteurs autorise donc :
 
