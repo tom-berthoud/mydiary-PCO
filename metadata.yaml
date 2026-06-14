@@ -35,8 +35,25 @@ header-includes:
   - \usepackage{graphicx}
   - \usepackage{eso-pic}
   - \AtBeginDocument{\let\oldmaketitle\maketitle\renewcommand{\maketitle}{\oldmaketitle\clearpage}\let\oldtableofcontents\tableofcontents\renewcommand{\tableofcontents}{\oldtableofcontents\clearpage}}
-  # Page de titre : couverture A4 en image pleine page (fond, sans marge) à la place du titre texte
-  - \AtBeginDocument{\renewcommand{\maketitle}{\thispagestyle{empty}\AddToShipoutPictureBG*{\put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{assets/titre1.png}}}\null\clearpage}}
+  # Page de titre : logos HEIG-VD + HES-SO, titre et auteur
+  - >
+    \AtBeginDocument{\renewcommand{\maketitle}{%
+      \begin{titlepage}
+      \thispagestyle{empty}
+      \centering
+      \vspace*{0.3cm}
+      \includegraphics[height=2cm]{assets/HEIG-VD_logo.png}\hfill\includegraphics[height=2cm]{assets/logo_hesso.pdf}
+      \vfill
+      {\Huge\bfseries\color{heading}Programmation Concurrente\par}
+      \vspace{0.5cm}
+      {\LARGE\color{subtle}Notes de cours\par}
+      \vspace{6cm}
+      {\Large Tom Berthoud\par}
+      \vspace{0.4cm}
+      {\large\color{subtle}HEIG-VD --- 2025-2026\par}
+      \vfill
+      \end{titlepage}%
+      \clearpage}}
   - \usepackage{titlesec}
   - \usepackage{tocloft}
   - \usepackage{ragged2e}
