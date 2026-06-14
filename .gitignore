@@ -1,6 +1,9 @@
 # PDF généré
 *.pdf
 
+# Exception : logo nécessaire à la compilation
+!assets/logo_hesso.pdf
+
 # Python
 __pycache__/
 *.pyc
